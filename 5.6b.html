@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSS Float and Position Learning Tool</title>
+    <style>
+        /* Previous styles remain the same until the lesson-specific styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: #f0f2f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: #1a2b3c;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            padding: 20px 20px 0 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background: #e9ecef;
+            border: none;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+        }
+
+        .tab.active {
+            background: #1a2b3c;
+            color: white;
+        }
+
+        .explanation {
+            padding: 20px;
+            background: #f8f9fa;
+            margin: 20px;
+            border-radius: 8px;
+            line-height: 1.6;
+        }
+
+        .code-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .code-editor {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .code-editor h3 {
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            background: #2d2d2d;
+            color: #d4d4d4;
+            border: 1px solid #3d3d3d;
+            padding: 10px;
+            font-family: monospace;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        .preview {
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            margin-top: 20px;
+        }
+
+        .preview-box {
+            border: 2px solid #dee2e6;
+            padding: 20px;
+            min-height: 200px;
+            background: white;
+        }
+
+        /* Lesson-specific styles */
+        #float-multiple .preview-box p {
+            border: 1px solid red;
+            padding: 10px;
+            margin: 5px;
+        }
+
+        #nav-menu .preview-box ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            background: #f8f9fa;
+            overflow: hidden;
+        }
+
+        #columns .preview-box #container {
+            width: 100%;
+            max-width: 960px;
+            margin: 0 auto;
+            background: #ccc;
+        }
+
+        .lesson {
+            display: none;
+        }
+
+        .lesson.active {
+            display: block;
+        }
+
+        /* Box sizing specific styles */
+        .box-comparison {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .box-example {
+            flex: 1;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CSS Float & Position Learning Guide</h1>
+            <p>Interactive examples from Module 5.6</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchLesson('float-multiple')">Floating Multiple Elements</button>
+            <button class="tab" onclick="switchLesson('nav-menu')">Navigation Menu</button>
+            <button class="tab" onclick="switchLesson('columns')">Creating Columns</button>
+            <button class="tab" onclick="switchLesson('box-sizing')">Box Sizing</button>
+        </div>
+
+        <div id="float-multiple" class="lesson active"></div>
+        <div id="nav-menu" class="lesson"></div>
+        <div id="columns" class="lesson"></div>
+        <div id="box-sizing" class="lesson"></div>
+    </div>
+
+    <script>
+        const lessons = {
+            // Previous lessons remain the same
+            'float-multiple': {
+                explanation: `
+                    <h2>Floating Multiple Elements</h2>
+                    <p>When you float multiple elements, they will stack horizontally as long as there is enough space. If there isn't enough room, subsequent elements will move down while staying as far to the specified side as possible.</p>
+                `,
+                html: `<p>P1</p>
+<p class="float2">P2</p>
+<p class="float3">P3</p>
+<p class="float4">P4</p>
+<p class="float5">P5</p>
+<p>P6</p>
+<p>P7</p>
+<p>P8</p>
+<p>P9</p>
+<p>P10</p>`,
+                css: `p {
+    border: 1px solid red;
+}
+
+p.float2 {
+    float: left;
+    width: 150px;
+    height: 70px;
+    margin: 0;
+    background: #CCC;
+}
+
+p.float3 {
+    float: left;
+    width: 150px;
+    height: 90px;
+    margin: 0;
+    background: #CCC;
+}
+
+p.float4 {
+    float: left;
+    width: 150px;
+    height: 100px;
+    margin: 0;
+    background: #CCC;
+}
+
+p.float5 {
+    float: left;
+    width: 150px;
+    height: 70px;
+    margin: 0;
+    background: #CCC;
+}`
+            },
+            'nav-menu': {
+                explanation: `
+                    <h2>Creating a Navigation Menu with Floats</h2>
+                    <p>One common use of floats is to create horizontal navigation menus from lists.</p>
+                `,
+                html: `<ul>
+    <li><a href="#">Home</a></li>
+    <li><a href="#">News</a></li>
+    <li><a href="#">Contact</a></li>
+    <li><a href="#">About</a></li>
+</ul>`,
+                css: `ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background: #f8f9fa;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    padding: 8px;
+    background-color: orange;
+    text-decoration: none;
+    color: white;
+}`
+            },
+            'columns': {
+                explanation: `
+                    <h2>Creating Column Layouts with Floats</h2>
+                    <p>Floats can be used to create multi-column layouts. This example shows a common two-column layout with a header and footer.</p>
+                `,
+                html: `<div id="container">
+    <div id="header">
+        <h1>Header</h1>
+    </div>
+    <div id="content">
+        <p>Main content area</p>
+        <p>More content here...</p>
+    </div>
+    <div id="navigation">
+        <a href="#">Nav Item</a>
+        <a href="#">Nav Item</a>
+        <a href="#">Nav Item</a>
+    </div>
+    <div id="footer">Footer</div>
+</div>`,
+                css: `body {
+    margin: 0;
+    padding: 0;
+    background: #ccc;
+}
+
+#container {
+    width: 960px;
+    margin: 0 auto;
+}
+
+#header {
+    padding: 30px;
+    background: #bbb;
+}
+
+#content {
+    float: left;
+    width: 660px;
+    background: #fff;
+    padding: 20px;
+}
+
+#navigation {
+    float: right;
+    width: 300px;
+    background: #eee;
+}
+
+#navigation a {
+    display: block;
+    margin: 0 0 10px 0;
+    padding: 10px;
+    background: #ddd;
+    text-decoration: none;
+    color: #333;
+}
+
+#footer {
+    clear: both;
+    background: #aaa;
+    padding: 10px;
+    text-align: center;
+}`
+            },
+            'box-sizing': {
+                explanation: `
+                    <h2>Box Sizing Property</h2>
+                    <p>The box-sizing property defines how the width and height of an element are calculated: should they include padding and borders, or not.</p>
+                    <p>There are two main values:</p>
+                    <ul>
+                        <li><strong>content-box (default):</strong> Width and height only include the content</li>
+                        <li><strong>border-box:</strong> Width and height include padding and borders</li>
+                    </ul>
+                `,
+                html: `<div id="example1">This div has a width of 300px (content-box)</div>
+<div id="example2">This div has a width of 300px (border-box)</div>`,
+                css: `#example1 {
+    box-sizing: content-box;
+    width: 300px;
+    height: 100px;
+    padding: 30px;
+    border: 10px solid blue;
+    background: #f0f0f0;
+    margin-bottom: 20px;
+}
+
+#example2 {
+    box-sizing: border-box;
+    width: 300px;
+    height: 100px;
+    padding: 30px;
+    border: 10px solid blue;
+    background: #f0f0f0;
+}`
+            }
+        };
+
+        // Previous JavaScript functions remain the same
+        function switchLesson(lessonId) {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+                if(tab.textContent.toLowerCase().includes(lessonId)) {
+                    tab.classList.add('active');
+                }
+            });
+
+            const lessonDivs = document.querySelectorAll('.lesson');
+            lessonDivs.forEach(div => {
+                div.classList.remove('active');
+                if(div.id === lessonId) {
+                    div.classList.add('active');
+                }
+            });
+
+            loadLesson(lessonId);
+        }
+
+        function loadLesson(lessonId) {
+            const lesson = lessons[lessonId];
+            const lessonDiv = document.getElementById(lessonId);
+            
+            lessonDiv.innerHTML = `
+                <div class="explanation">${lesson.explanation}</div>
+                <div class="code-container">
+                    <div class="code-editor">
+                        <h3>HTML</h3>
+                        <textarea class="html-input" readonly>${lesson.html}</textarea>
+                        <h3>CSS</h3>
+                        <textarea class="css-input">${lesson.css}</textarea>
+                        <button onclick="applyStyles('${lessonId}')">Apply Styles</button>
+                    </div>
+                    <div class="preview">
+                        <h3>Preview</h3>
+                        <div class="preview-box"></div>
+                    </div>
+                </div>
+            `;
+
+            applyStyles(lessonId);
+        }
+
+        function applyStyles(lessonId) {
+            const lessonDiv = document.getElementById(lessonId);
+            const html = lessonDiv.querySelector('.html-input').value;
+            const css = lessonDiv.querySelector('.css-input').value;
+            const previewBox = lessonDiv.querySelector('.preview-box');
+            
+            previewBox.innerHTML = html;
+            
+            const styleId = `style-${lessonId}`;
+            const existingStyle = document.getElementById(styleId);
+            if (existingStyle) {
+                existingStyle.remove();
+            }
+            
+            const styleTag = document.createElement('style');
+            styleTag.id = styleId;
+            styleTag.textContent = `#${lessonId} .preview-box ${css}`;
+            document.head.appendChild(styleTag);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadLesson('float-multiple');
+        });
+    </script>
+</body>
+</html>
